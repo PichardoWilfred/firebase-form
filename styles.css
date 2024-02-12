@@ -8,7 +8,7 @@ html, body {
     font-family: 'Poppins', sans-serif;
     height: 100vh;
     background-color: #F8F9FC;
-    color: #181818;
+    color: #2e2e2e;
 }
 
 main {
@@ -65,17 +65,21 @@ main form .input-container label {
 }
 main form .input-container :is(input, textarea) {
     padding: 6px;
-    border: 1px solid gray;
+    border: 1px solid #ffce8f;
     border-radius: 3px;
     resize: none;
+}
+
+main form .input-container input {
+    padding-inline: 12px;
+}
+main form .input-container :is(textarea, input):is(:active, :focus, :focus-within) {
+    outline: #FFA50E solid 1px;
 }
 main form .input-container :is(textarea) {
     min-height: 120px;
 }
 
-main form .input-container :is(input, textarea):is(:active, :focus, :focus-within) {
-    outline: none;
-}
 
 main form button {
     font-size: 18px;
