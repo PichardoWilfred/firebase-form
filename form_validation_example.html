@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assessment Popup</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css" integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Lora&family=Open+Sans:wght@300;400;500;600;700&family=Prata&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Lora&family=Open+Sans:wght@300;400;500;600;700&family=PT+Sans:wght@400;700&family=Prata&display=swap');
+    * {
+        box-sizing: border-box;
+    }
+    .cursor-pointer {
+        cursor: pointer;
+    }
+    h4, h3 {
+        font-family: 'Prata', serif;
+    }
+    .mask-container {
+        position: fixed;
+        display: none;
+        justify-content: center;
+        align-items: center;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+    }
+    @keyframes fade-in {
+        from {
+            opacity: 0;
+        } to {
+            opacity: 1;
+        }   
+    }
+    .mask-container.opened {
+        display: flex;
+        animation: 200ms fade-in ease-in-out;
+    }
+    
+    .mask-container .mask {
+        position: absolute;
+        background-color: #00000066;
+        height: 100%;
+        width: 100%;
+    }  
+    .mask-container .modal {  
+        position: relative;
+        z-index: 3;
+        display: flex;
+
+        width: 680px;
+        height: 500px;
+        background-color: #FFFFFF;
+    }  
+    .mask-container .modal .close-container {
+        position: absolute;
+        right: 0;
+        margin-left: auto;
+    }
+    .mask-container .modal .close-container i {
+        position: absolute;
+        top: 20px;
+        right: 30px;
+        font-size: 25px;
+        color: #E9E9E9;
+        transition: all 0.1s ease-in-out;
+    }
+    .mask-container .modal .close-container:hover i{ 
+        color: #464646;
+    }
+    .mask-container .modal .left-section {
+        display: flex;
+        flex-direction: column;
+    }
+    .mask-container .modal .left-section .red-border {
+        border-right: 1px solid #FD9199;
+        width: 50px;
+    }
+    .mask-container .modal .left-section .red-border.up {
+        height: 95px;
+    }
+    .mask-container .modal .left-section .red-border.down {
+        height: 110px;
+    }
+    .mask-container .modal .left-section .space-between {
+        flex-grow: 1;
+        border-right: 1px solid #E9E9E9;
+    }
+    .mask-container .modal .title-part {
+        display: flex;
+    }   
+    .mask-container .modal .title-part h4 {
+        width: 270px;
+        color: #464646;
+        margin-block: auto;
+        padding-left: 40px;
+        font-size: 63px;
+        font-weight: 300;
+        line-height: 1.30;
+        letter-spacing: 13px;
+    }
+    .mask-container .modal .right-section {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+    .mask-container .modal .right-section .gray-border {
+        border-left: 1px solid #E9E9E9;
+        height: 100px;
+    }
+    
+    .mask-container .modal .right-section .gray-border.up > * {
+        display: none;
+    }
+    
+    .mask-container .modal .right-section .gray-border.down {
+            display: flex;
+            align-content: end;
+            margin-top: 5px;
+        }
+    .mask-container .modal .right-section .middle {
+        display: flex;
+        align-items: center;
+    }
+    .mask-container .modal .right-section .middle p.ampersand {
+        margin-block: 22px;
+        margin-left: -20px;
+        height: 100px;
+        font-size: 70px;
+        line-height: 1.5;
+    }
+    
+    p.ampersand {
+        font-family: 'Prata', serif;
+        color:#FD8C94;
+    }
+    
+    .mask-container .modal .right-section .middle h3.number {
+        font-size: 162px;
+        font-weight: 300;
+        margin-block: 0;
+        line-height: 125px;
+        color: #464646;
+        margin-top: 20px
+    }
+    
+    .mask-container .modal .right-section .middle .percentage-off {
+        margin-top: 19px 0 auto 8px;
+    }
+    .mask-container .modal .right-section .middle h5.percentage {
+        font-size: 92px;
+        margin-block: 0;
+        color: #464646;    
+        line-height: 65px;
+        font-weight: 300;
+    }
+    .mask-container .modal .right-section .middle h5.off {
+        font-size: 33px;
+        line-height: 32px;
+        margin-block: 0;
+        font-weight: 300;
+        color: #464646;
+        letter-spacing: 4px;
+    }
+    /* FORM */
+    form.default {
+        display: flex;
+        align-items: end;
+    }
+    form.default .input-group {
+        position: relative;
+        display: flex;
+        flex-direction: column-reverse;
+        height: max-content;
+        margin-left: 21px;
+    }
+    form.default label.email {
+        font-size: 16px;
+        font-weight: 600;
+        font-family: 'PT Sans', sans-serif;
+        color: #464646;
+        letter-spacing: 3px;
+        transform: translateY(20px);
+        transition: all 0.15s ease-in-out;
+    }    
+
+    form.default input.email {
+        font-size: 15px;
+        font-weight: 600;
+        color: #464646;
+        font-family: 'PT Sans', sans-serif;
+        max-width: 184px;
+        padding: 5px;
+        border: 0;
+        border-bottom: 3px solid #464646; 
+        word-spacing: 2px;    
+    }
+    
+    form.default input.email.invalid + label.email {
+        color: #ffc4c4;
+    }
+    form.default input.email.invalid {
+        border-bottom-color: #ffc4c4;
+        background-color: #ffc4c438;
+    }
+    form.default input.email:is(:focus, .filled, .invalid) + label.email {
+        transform: scale(0.9) translateX(-10px);
+        letter-spacing: 2px;
+    }
+    form.default small.error-label {
+        position: absolute;
+        bottom: -19px;
+        color: #ff9898;
+        font-family: 'PT Sans', sans-serif;
+        font-weight: 600;
+    }
+    form.default input.email:is(:focus, :focus-visible) {
+        outline: 0;
+    }
+    form.default button.sign-in {
+        letter-spacing: 2px;
+        height: max-content;
+        font-size: 16px;
+        font-family: 'PT Sans', sans-serif;
+        font-weight: 600;
+        color: #FD8C94;
+        padding: 10px 20px;
+        margin-left: 14px;
+        background-color: transparent;
+        border: 0;
+        border-bottom: 3px solid #FD8C94;
+        cursor: pointer;
+        transition: all 0.1s ease-in-out;
+    }
+    
+    form.default button.sign-in:hover {
+        background-color: #fd919821;
+    }
+    form.default button.sign-in:active {
+        color: white;
+        transition: all 0.1s ease-in-out;
+        background-color: #FD9199;
+    }
+    .form-success {    
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding-inline: 82px;
+        height: 100%;
+    }
+    .form-success h4.title {
+        margin: 15px 0 0 0;
+        font-size: 65px;
+        color: #464646;
+        letter-spacing: 12px;
+        font-weight: 300;    
+        line-height: 88px;
+    }
+    /* decoration */
+    .decoration {
+        display: flex;
+        align-items: center;
+        margin-top: 0px;
+    }
+    .decoration div.line {
+        display: flex;
+        align-self: end;
+        height: 50%;
+        width: 90px;
+        border-top: 1px solid #E9E9E9;
+    }
+    .decoration div.circle {
+        width: 10px;
+        height: 10px;
+        background-color: #E9E9E9;
+        border-radius: 100rem;
+    }
+    .decoration div.circle.big {
+        width: 15px;
+        height: 15px;
+    }
+    .decoration div:is(.circle, .line) {
+        margin-right: 7px;
+    }
+
+    /* end-decor */
+    .form-success p.success-text {
+        margin-top: 12px;
+        margin-bottom: 16px;
+        font-family: 'PT Sans', sans-serif;
+        font-size: 14px;
+        color: #464646;
+        line-height: 2;        
+        letter-spacing: 1px;
+    }
+    
+    .form-success button.go-shop, main > .open-modal  {
+        width: max-content;
+        font-size: 16px;
+        font-weight: 600;
+        font-family: 'PT Sans', sans-serif;
+        color: #FD8C94;   
+        letter-spacing: 3px;
+        padding: 12px 15px;
+        background-color: transparent;
+        border: 0;
+        border-bottom: 3px solid #FD8C94;
+        transition: all .15s ease-in-out;
+    }
+    
+    .form-success button.go-shop:hover, main > .open-modal:hover {
+        background-color: #fd919821;
+    }
+    .form-success button.go-shop:active, main > .open-modal:active {
+        color: white;
+        transition: all 0.1s ease-in-out;
+        background-color: #FD9199;
+    }
+    
+    @media screen and (max-width: 715px) {
+        /* unused styles */
+        .mask-container .modal .left-section {
+            display: none;
+        }
+        .mask-container .modal .close-container {
+            position: absolute;
+            margin-left: auto;
+            right: -8px;
+            top: -10px;
+        }
+        /* styles */
+        .mask-container .modal {  
+            flex-direction: column;
+            height: 91%;
+            max-height: 650px;
+            width: 93%;
+            padding: 0px 15px 10px;
+        }
+        
+        .mask-container .form-sended.modal { 
+            height: 79%;
+        }
+        .mask-container .modal .title-part {
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .mask-container .modal .title-part h4 {
+            text-align: center;    
+            width: 100%;    
+            max-width: 430px;
+            font-size: 45px;
+            margin-top: 42px;
+            padding-left: 0;
+            line-height: 62px;
+            letter-spacing: 9px;
+        }
+        
+        .mask-container .modal .right-section  {
+            align-items: center;
+        }
+        .mask-container .modal .right-section .gray-border {
+            border-left: 0;
+        }
+        .mask-container .modal .right-section .gray-border.up > * {
+            display: unset;
+        }
+        .mask-container .modal .right-section .gray-border.up {
+            display: flex;
+            justify-content: center;    
+            align-items: end;
+            height: 78px;
+            max-width: 264px;
+            width: 100%;
+        }
+        
+        .mask-container .modal .right-section .gray-border.up .mobile-border {
+            flex-grow: 2;
+            border-top: 1px solid #E9E9E9;
+            height: 50%;
+        }
+        .mask-container .modal .right-section .gray-border.up p.ampersand {
+            max-width: 58px;
+            max-height: 78px;
+            margin-inline: 10px;
+            margin-block: 0;
+            font-size: 65px;
+        }
+        
+        .mask-container .modal .right-section .middle {
+            display: flex;
+            justify-content: center;
+        }
+        .mask-container .modal .right-section .middle h3.number {
+            font-size: 144px;
+        }
+        .mask-container .modal .right-section .middle p.ampersand {
+            display: none;
+        }
+        .mask-container .modal .right-section .gray-border.down {
+            width: 100%;
+            height: auto;
+        }
+        
+        form.default {
+            width: 100%;
+            flex-direction: column;
+        }
+        form.default .input-group {
+            width: 100%;
+            margin-left: 0;
+            margin-bottom: 32px;
+        }
+        
+        form.default label.email {
+            text-align: center;
+            transition: all 0.25s ease-in-out;
+        }
+        form.default input.email {
+            width: 100%;
+            max-width: unset;
+            padding: 8px;
+        }
+        form.default button.sign-in {
+            width: 100%;
+            letter-spacing: 3px;
+            padding: 18px;
+            border: 1px solid #FD8C94;
+        }
+        form.default button.sign-in:is(:active, :hover) {
+            background-color: #FD8C94;
+            color: white;
+        }
+
+        /* Form successfully submitted */
+        .modal.form-sended { }
+        .form-success {
+            padding-inline: 20px;
+        }
+        .form-success h4.title {
+            font-size: 50px;
+            line-height: 65px;
+            max-width: 204px;
+        }
+        .decoration {
+            margin-top: 5px;
+        }
+        .decoration div.line {
+            width: 108px;
+        }
+        .form-success p.success-text {
+            margin-top: 18px;
+            margin-bottom: 30px;
+            width: 275px;
+        }
+        .form-success button.go-shop,  main > .open-modal {
+            width: 100%;
+            font-size: 16px;
+            font-weight: 600;
+            font-family: 'PT Sans', sans-serif;
+            color: #FD8C94;    
+            letter-spacing: 3px;
+            padding-block: 22px;
+            background-color: transparent;
+            border: 1px solid #FD8C94;
+            transition: all .1s ease-in-out;
+        }
+        main > .open-modal {
+            margin-top: 1.5rem;
+            max-width: 400px;
+        }
+        .form-success button.go-shop:is(:active, :hover, :focus), main > .open-modal:is(:active, :hover, :focus) {
+            background-color: #FD8C94;
+            color: white;
+        }
+    }
+    /*  hidding */
+    .modal > div:is(.form-success) {
+        display: none !important;
+    }
+    .modal.form-sended > div:is(.form-success, .close-container) {
+        display: flex !important;
+    }
+    .modal.form-sended > .form-success { 
+        animation: fade-in 400ms ease-in-out;
+    }
+    .modal.form-sended > div:not(.form-success, .close-container) {
+        display: none !important;
+    }
+    .modal.dissapearing > div:not(.form-success) {
+        animation: fade-out 300ms ease-in-out;
+    }
+    #modal.dissapearing {
+        animation: fade-out 300ms ease-in-out;
+    }
+    main {
+        display: flex;
+        justify-content: center;
+    }
+
+    @keyframes fade-in {
+        from {
+            opacity: 0;
+        }to {
+            opacity: 1;
+        }
+    } 
+    @keyframes fade-out {
+        from {
+            opacity: 1;
+        }to {
+            opacity: 0;
+        }
+    } 
+    /*.modal :is(.left-section, .title-part, .right-section) > :not(.gray-border.down){
+        display: none !important; 
+    }*/
+</style>
+<body>
+    <div class="mask-container" id="modal">
+        <!-- form-sended -->
+        <div class="modal" id="modal-content">
+            <div class="close-container">
+                <i class="fa-solid fa-xmark cursor-pointer" data-action="close-modal"></i>
+            </div>
+            <div class="left-section">
+                <div class="red-border up"></div>
+                <div class="space-between"></div>
+                <div class="red-border down"></div>
+            </div>
+            <div class="title-part">
+                <h4>Get Your Style On</h4>
+            </div>
+            <div class="right-section">
+                <div class="gray-border up">
+                    <div class="mobile-border"></div>
+                    <p class="ampersand">
+                        &
+                    </p>
+                    <div class="mobile-border"></div>
+                </div>
+                <div class="middle">
+                    <p class="ampersand"> & </p>
+                    <h3 class="number">
+                        20
+                    </h3>
+                    <div class="percentage-off">
+                        <h5 class="percentage">%</h5>
+                        <h5 class="off">OFF</h5>
+                    </div>
+                </div>
+                
+                <div class="gray-border down">
+                    <form id="default" action="" class="default">
+                        <div class="input-group">
+                            <small class="error-label"></small>
+                            <input 
+                            class="email cursor-pointer" type="text" 
+                            type="email" name="email" 
+                            id="email" size="30">
+                            <label for="email" class="email">Email Address</label>
+                            
+                        </div>
+                        <button type="submit" class="sign-in">
+                            Sign Up
+                        </button>
+                    </form>
+                </div>
+            </div>
+            <!-- sucess section -->
+            <div class="form-success">
+                <h4 class="title">Just Like Old Friends</h4>
+                <div class="decoration">
+                    <div class="circle"></div>
+                    <div class="line"></div>
+                    <div class="circle"></div>
+                    <div class="circle big"></div>
+                    <div class="circle"></div>
+                </div>
+                <p class="success-text">We'll keep you updated on any deals, news, or gossip that comes our way!</p>
+                <button class="go-shop cursor-pointer" data-action="close-modal">Go Shop!</button>
+            </div>
+        </div>
+        <div class="mask" data-action="close-modal"></div>
+    </div>
+    <main>
+        <button id="open-modal" class="open-modal cursor-pointer">
+            Open modal
+        </button>
+    </main>
+    <script>
+        const modal_container = document.querySelector('#modal')
+        const modal_content = document.querySelector('#modal-content');
+        const form = document.querySelector('form#default');
+        const input = document.querySelector('input#email');
+        const small = document.querySelector('small.error-label')
+        
+        const closeModal = document.querySelectorAll('[data-action="close-modal"]')
+        const openModal = document.querySelector('button#open-modal');
+        //firefox reset
+        input.value = '';
+        openModal.addEventListener('click', () => {
+            modal_container.classList.add('opened');
+            input.value = '';
+            input.classList.remove('filled') 
+        });
+
+        closeModal.forEach(instance => {
+            instance.addEventListener('click', () => {
+                modal_container.classList.add('dissapearing');
+            });
+        });
+        modal_container.addEventListener('animationend', () => {
+            if ( modal_container.classList.contains('dissapearing') ) {
+                modal_container.classList.remove('opened');
+                const id = setTimeout(() => {
+                    modal_container.classList.remove('dissapearing');
+                    modal_content.classList.remove('form-sended');
+                },0)
+            }
+
+        })
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const { value } = input;
+            const valid =  /[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/g.test(value);
+            if (valid) {
+                modal_content.classList.add('dissapearing')
+            }else {
+                small.textContent = 'Please enter a valid email.'
+                email.focus();
+                input.classList.add('invalid');
+            }
+        });
+
+        modal_content.addEventListener('animationend', () => {
+            modal_content.classList.remove('dissapearing');
+            modal_content.classList.add('form-sended');
+        })
+
+        input.addEventListener('input', ({ target }) => {
+            const { value } = target;
+            const valid = value !== '' && value !== ' ' &&  !/\s/g.test(value);
+            if (valid) {
+                target.classList.add('filled');
+                target.classList.remove('invalid');
+                small.textContent = '';
+            }else {
+                target.classList.remove('filled') 
+            }
+        });
+
+    </script>
+</body>
+</html>
