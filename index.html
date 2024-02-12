@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Firebase Formulario</title>
+    <script defer src="./main.js"></script>
+    <!-- Insert this script at the bottom of the HTML, but before you use any Firebase services -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+
+    <link rel="stylesheet" href="./styles.css" type="text/css" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,300;0,400;0,500;0,600;0,700;1,100;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
+
+</head>
+<body>
+    <main>
+        <form name="firebase-form" autocomplete="off" id="firebase-form" class="firebase">
+            <div class="title-container">
+                <h1>Formulario de Firebase</h1>
+                <img src="./firebase.svg" alt="firebase" class="firebase">
+            </div>
+            <div class="input-container">
+                <label for="name">Nombre</label>
+                <input type="text" id="name" name="name">
+            </div>
+            <div class="input-container">
+                <label for="email">Correo Electrónico</label>
+                <input autocomplete="false" type="email" id="email" name="email">
+            </div>
+            <div class="input-container">
+                <label for="suggestion">Recomendación</label>
+                <textarea autocomplete="false" id="suggestion" name="suggestion"></textarea>
+            </div>
+            <button id="submit">Enviar Formulario</button>
+        </form>
+    </main>
+    <script>
+    // Initialize Firebase
+    const firebaseConfig = {
+        apiKey: "AIzaSyBPxt4q8qWRojTLWhP0W7iqDsyM1KpZSW4",
+        authDomain: "ht-playground-ab9e1.firebaseapp.com",
+        projectId: "ht-playground-ab9e1",
+        storageBucket: "ht-playground-ab9e1.appspot.com",
+        messagingSenderId: "363921436084",
+        appId: "1:363921436084:web:cb0b4180c9246a4fe756e1",
+        measurementId: "G-Y0K53QPDJ9"
+    };
+    const app = firebase.initializeApp(firebaseConfig);
+    
+    // handle-form
+    const form = document.querySelector("form#firebase-form");
+    function handleForm(event) {
+        event.preventDefault();
+
+        const form_data = new FormData(event.target);
+        const form_value = Object.fromEntries(form_data);
+
+        console.log(form_value);
+        // app.firestore().collection('/requests').add(form_value); // Solo admite objetos
+        
+        const button = document.querySelector("button#submit");
+        button.disabled = true;
+    } 
+
+    form.addEventListener('submit', handleForm); //event-listener
+    </script>
+</body>
+</html>
