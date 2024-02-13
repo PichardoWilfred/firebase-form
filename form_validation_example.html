@@ -570,8 +570,7 @@
                     </form>
                 </div>
             </div>
-            <!-- sucess section -->
-            <div class="form-success">
+            <div class="form-success"> <!-- sucess section -->
                 <h4 class="title">Just Like Old Friends</h4>
                 <div class="decoration">
                     <div class="circle"></div>
@@ -580,7 +579,9 @@
                     <div class="circle big"></div>
                     <div class="circle"></div>
                 </div>
-                <p class="success-text">We'll keep you updated on any deals, news, or gossip that comes our way!</p>
+                <p class="success-text">
+                    We'll keep you updated on any deals, news, or gossip that comes our way!
+                </p>
                 <button class="go-shop cursor-pointer" data-action="close-modal">Go Shop!</button>
             </div>
         </div>
@@ -594,7 +595,14 @@
     <script>
         const modal_container = document.querySelector('#modal')
         const modal_content = document.querySelector('#modal-content');
+
         const form = document.querySelector('form#default');
+
+
+        const h1 = document.querySelector("");
+        
+        form;
+
         const input = document.querySelector('input#email');
         const small = document.querySelector('small.error-label')
         
@@ -605,7 +613,7 @@
         openModal.addEventListener('click', () => {
             modal_container.classList.add('opened');
             input.value = '';
-            input.classList.remove('filled') 
+            input.classList.remove('filled');
         });
 
         closeModal.forEach(instance => {
@@ -640,7 +648,7 @@
         modal_content.addEventListener('animationend', () => {
             modal_content.classList.remove('dissapearing');
             modal_content.classList.add('form-sended');
-        })
+        });
 
         input.addEventListener('input', ({ target }) => {
             const { value } = target;
